@@ -6,7 +6,7 @@ import {Account} from "./Account";
 import {AccountManage} from "./AccountManage";
 
 let input = require('readline-sync');
-
+let newRoomManage = new RoomManage();
 function mainMenu(){
     let choice = -1;
     do {
@@ -31,35 +31,44 @@ function signUp(){
     let userNameRegExp = /^[_a-z0-9]{8,}$/;
     let userName: string =  input.question("Enter username: ");
     if (userNameRegExp.test(userName)) {
-        let passWord: string = input.question("Enter password: ");
-        let passWordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-        if (passWordRegExp.test(passWord)) {
-            let newAccount = new Account(userName,passWord);
-            newAccountManager.addAccount(newAccount);
-            console.log("-----Đăng ký thành công!-----");
-        }
-        else {
-            console.log( "Tên password phải nhập ít nhất 8 ký tự, bao gồm 1 chữ cái viết hoa và số");
+        if (newAccountManager.checkAccount(userName)) {
+            console.log("Tên tài khoản đã có, vui lòng dùng tên khác!")
+        } else {
+            let passWord: string = input.question("Enter password: ");
+            let passWordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+            if (passWordRegExp.test(passWord)) {
+                let newAccount = new Account(userName,passWord);
+                newAccountManager.addAccount(newAccount);
+                console.log("-----Đăng ký thành công!-----");
+            }
+            else {
+                console.log( "Tên password phải nhập ít nhất 8 ký tự, bao gồm tối thiểu một chữ cái viết hoa và số!");
+            }
         }
 
     } else {
-        console.log("Tên tài khoản phải nhập ít nhất 8 ký tự, bao gồm ký tự số và chữ");
+        console.log("Tên tài khoản phải nhập ít nhất 8 ký tự, bao gồm cả ký tự chữ và số!");
     }
 
 }
 let newAccountManager = new AccountManage();
 function logIn() {
     let userName: string =  input.question("Enter username: ");
-    let passWord: string = input.question("Enter password: ");
-   if (newAccountManager.checkLoginInfo(userName,passWord)) {
-       main()
-   }
-   else {
-       console.log("Tài khoản không tồn tại, vui lòng đăng ký lại!");
-   }
+    if (newAccountManager.checkAccount(userName)) {
+        let passWord: string = input.question("Enter password: ");
+        if (newAccountManager.checkPass(passWord)) {
+            main()
+        }
+        else {
+            console.log("Sai mật khẩu, vui lòng đăng nhập lại!");
+        }
+    }
+    else {
+        console.log("Tài khoản không tồn tại, vui lòng đăng ký lại!");
+    }
 }
 
-mainMenu();
+
 function main (){
     let choice = -1;
     do {
@@ -121,7 +130,7 @@ function manageRoom(){
     } while (choice !== 0);
 }
 
-let newRoomManage = new RoomManage();
+
 function addNewRoom(){
     let id = +input.question('Enter ID: ');
     let roomName = input.question('Enter roomName: ');
@@ -223,7 +232,9 @@ function deleteRooms(){
 
 function showRooms(){
     let listRoom = newRoomManage.informationOfRoom();
-    console.log(listRoom);
+    for (let i = 0; i < listRoom.length; i++) {
+        console.log(listRoom[i].getInfo());
+    }
 }
 
 function checkStatusRooms(){
@@ -279,6 +290,7 @@ function addNewReceipt(){
     console.log(menu);
     let choice = +input.question("Enter choice: ");
     let newReceipt = new Receipt(id,startTime,endTime,staffName,listRoom[choice-1]);
+    // console.log(listRoom[choice-1])
     newReceiptManage.addReceipt(newReceipt);
 }
 
@@ -366,7 +378,8 @@ function findReceipts(){
 }
 function showReceipts(){
     let listReceipt = newReceiptManage.informationOfReceipt();
-    console.log(listReceipt);
+    for (let i = 0; i < listReceipt.length; i++) {
+        console.log(listReceipt[i].getInfo());
+    }
 }
-
-main();
+mainMenu();

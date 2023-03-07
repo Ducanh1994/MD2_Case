@@ -1,5 +1,6 @@
 import {Room} from "./Room";
 
+
 export class Receipt {
     private _id: number;
     private _startTime: number;
@@ -51,9 +52,6 @@ export class Receipt {
         return this._room;
     }
 
-    set room(value: Room) {
-        this._room = value;
-    }
     totalTime() {
         return this._endTime - this._startTime;
     }
@@ -62,6 +60,6 @@ export class Receipt {
     }
     getInfo(){
         return `Thời gian bắt đầu: ${this.startTime}, Thời gian kết thúc: ${this.endTime}, Tổng thời gian: ${this.totalTime()}
-         Nhân viên phục vụ là: ${this.staffName}, Thông tin phòng thuê: ${this.room}, Tổng số tiền phải trả: ${this.totalPay()}`
+         Nhân viên phục vụ là: ${this.staffName}, Tên phòng thuê: ${this.room.roomName}, Tổng số tiền phải trả: ${this.totalPay()}`
     }
 }

@@ -65,7 +65,7 @@ export class Room {
         this._status = value;
     }
     getInfo() {
-        return `Id Room: ${this.id}, Name Room: ${this.roomName}, Price: ${this.roomPrice}, Number Of Toilet: ${this.numberOfToilet},
+        return `RoomID: ${this.id}, RoomName: ${this.roomName}, RoomPrice: ${this.roomPrice}, Number Of Toilet: ${this.numberOfToilet},
        Number Of Bedroom: ${this.numberOfBedRoom}, Status: ${this.status} `
     }
 }
